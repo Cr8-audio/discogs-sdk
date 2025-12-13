@@ -40,9 +40,10 @@ export class Search {
       }
     } catch (error) {
       // Fall back to Basic Auth if OAuth fails or tokens aren't available
-      const basicAuth = Buffer.from(
+      const { base64Encode } = await import('../utils/base64');
+      const basicAuth = base64Encode(
         `${this.base.getConsumerKey()}:${this.base.getConsumerSecret()}`,
-      ).toString('base64');
+      );
       headers.Authorization = `Basic ${basicAuth}`;
       console.warn(
         'Using Basic Auth. Rate limits will be restricted to 60 requests/minute. Consider using OAuth for higher limits (240 req/min).',

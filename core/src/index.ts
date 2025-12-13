@@ -17,7 +17,7 @@ export * from './implementations/DefaultOAuthHandler';
 
 export * from './adapters/memoryStorage';
 
-export { Auth } from './auth';
+export { Auth, NodeAuth } from './auth';
 export { Base, BaseImplementation, Config } from './base';
 export { Collection } from './collection';
 export { Search } from './search';
