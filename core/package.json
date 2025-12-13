@@ -1,6 +1,6 @@
 {
   "name": "@crate.ai/discogs-sdk",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "an SDK for the Discogs API",
   "repository": {
     "type": "git",
