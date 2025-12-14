@@ -45,7 +45,7 @@ export class DefaultOAuthHandler implements OAuthHandler {
         `OAuth oauth_consumer_key="${this.config.consumerKey}",` +
         `oauth_nonce="${nonce}",` +
         `oauth_callback="${encodeURIComponent(this.config.callbackUrl)}",` +
-        `oauth_signature="${encodeURIComponent(signature)}",` +
+        `oauth_signature="${signature}",` +
         `oauth_signature_method="PLAINTEXT",` +
         `oauth_timestamp="${timestamp}",` +
         `oauth_version="1.0"`;
@@ -120,7 +120,7 @@ export class DefaultOAuthHandler implements OAuthHandler {
         `oauth_nonce="${nonce}",` +
         `oauth_token="${requestToken}",` +
         `oauth_verifier="${params.oauthVerifier}",` +
-        `oauth_signature="${encodeURIComponent(signature)}",` +
+        `oauth_signature="${signature}",` +
         `oauth_signature_method="PLAINTEXT",` +
         `oauth_timestamp="${timestamp}",` +
         `oauth_version="1.0"`;
