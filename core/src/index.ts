@@ -17,6 +17,11 @@ export * from './implementations/DefaultOAuthHandler';
 
 export * from './adapters/memoryStorage';
 
+export * from './utils/errors';
+export * from './utils/rateLimit';
+export * from './utils/base64';
+
+
 export { Auth, NodeAuth } from './auth';
 export { Base, BaseImplementation, Config } from './base';
 export { Collection } from './collection';
