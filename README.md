@@ -1,56 +1,80 @@
 # Discogs SDK
 
-The Discogs SDK is a library that uses the Discogs API to authenticate and access their data. Currently, the library supports the authentication flow, collection, search and retrieving the user's identity.
+The Discogs SDK (`@crate.ai/discogs-sdk`) authenticates with the Discogs API and accesses collection, search, and identity data. It is Cloudflare Workers–safe by default (Node-only local OAuth callback lives in opt-in `NodeAuth`).
 
 # Getting Started
-1. sign in to discogs and go to [developer settings](https://www.discogs.com/settings/developers)
-2. click on "New App"
-3. fill out the form and click "Create App"
-4. Obtain your consumer key and secret from Discogs [here](https://www.discogs.com/settings/developers).
-5. Install the library using npm: `npm install @crate.ai/discogs-sdk`.
+
+1. Sign in to Discogs and open [developer settings](https://www.discogs.com/settings/developers).
+2. Click **New App**, fill out the form, and create the app.
+3. Copy your consumer key and secret.
+4. Install: `npm install @crate.ai/discogs-sdk`.
 
 # Usage
-1. Import the library into your project.
-2. Create a new instance of the library with your Discogs consumer key and secret.
-3. Call the `authenticate` method on the instance.
-4. The method will return a promise that resolves with the user's identity.
 
-Here's an example of how to use the library:
-
-```javascript
-import { DiscogsSDK, StorageService } from '@crate.ai/discogs-sdk';
-import path from 'path';
-
-// Configure storage path to a directory where you have write permissions
-StorageService.storagePath = path.join(process.cwd(), 'storage.json');
+```typescript
+import { DiscogsSDK, StorageAdapter } from '@crate.ai/discogs-sdk';
 
 const discogs = new DiscogsSDK({
-  DiscogsConsumerKey: "YOUR_CONSUMER_KEY",
-  DiscogsConsumerSecret: "YOUR_CONSUMER_SECRET",
+  DiscogsConsumerKey: 'YOUR_CONSUMER_KEY',
+  DiscogsConsumerSecret: 'YOUR_CONSUMER_SECRET',
+  userAgent: 'YourApp/1.0 +https://example.com',
 });
 
 (async () => {
   try {
-    const res = await discogs.auth.authenticate();
-    console.log("Authenticated");
+    const { verificationURL } = await discogs.auth.getRequestToken();
+    console.log('Authorize at:', verificationURL);
 
-    const identity = await discogs.auth.getUserIdentity({});
+    // After the user authorizes, complete the callback:
+    // await discogs.auth.handleCallback({ oauthVerifier, oauthToken });
+
+    const identity = await discogs.auth.getUserIdentity();
     console.log(identity);
 
     const results = await discogs.search.getSearchResults({
-      query: "rush",
-      country: "canada",
+      query: 'rush',
+      country: 'canada',
     });
     console.log(results);
   } catch (error) {
-    console.error("Error:", error);
+    console.error('Error:', error);
   }
 })();
-
 ```
 
-That's it! You're now ready to use the library in your project.
+## Custom storage
+
+Default storage is in-memory. Persist tokens with a `StorageAdapter` via `DiscogsSDK.withCustomStorage`:
+
+```typescript
+import { DiscogsSDK, StorageAdapter } from '@crate.ai/discogs-sdk';
+
+class FileOrKvStorage implements StorageAdapter {
+  async getItem(key: string): Promise<string | null> {
+    /* ... */
+    return null;
+  }
+  async setItem(key: string, value: string): Promise<void> {
+    /* ... */
+  }
+  async removeItem(key: string): Promise<void> {
+    /* ... */
+  }
+}
+
+const discogs = DiscogsSDK.withCustomStorage(
+  {
+    DiscogsConsumerKey: 'YOUR_CONSUMER_KEY',
+    DiscogsConsumerSecret: 'YOUR_CONSUMER_SECRET',
+  },
+  new FileOrKvStorage(),
+);
+```
+
+## Rate limits
+
+`DefaultHttpClient` honors Discogs `X-Discogs-Ratelimit*` headers, backs off on `429` (using `Retry-After` when present), and exposes typed `RateLimitError` / `getLastRateLimitInfo()` for Workers callers. See [`core/CLOUDFLARE_WORKERS.md`](./core/CLOUDFLARE_WORKERS.md) and [`core/README.md`](./core/README.md).
 
 ## Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](./core/CONTRIBUTING.md) for details on how to contribute.
+See [CONTRIBUTING.md](./core/CONTRIBUTING.md).

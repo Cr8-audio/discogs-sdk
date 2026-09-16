@@ -11,6 +11,7 @@ A TypeScript SDK for the Discogs API with dependency injection support.
 - Comprehensive test coverage
 - Collection management
 - Search functionality
+- Discogs rate-limit handling (429 backoff, typed `RateLimitError`)
 
 ## Installation
 
