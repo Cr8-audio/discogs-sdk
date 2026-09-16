@@ -1,7 +1,10 @@
 import { Config, BaseImplementation } from '../base';
 import { StorageAdapter } from '../interfaces/storage';
 import { MemoryStorageAdapter } from '../adapters/memoryStorage';
-import { DefaultHttpClient } from '../implementations/DefaultHttpClient';
+import {
+  DefaultHttpClient,
+  RateLimitOptions,
+} from '../implementations/DefaultHttpClient';
 import { DefaultOAuthHandler } from '../implementations/DefaultOAuthHandler';
 import { DefaultTokenManager } from '../implementations/DefaultTokenManager';
 
@@ -11,6 +14,8 @@ export interface DiscogsSDKConfig {
   baseUrl?: string;
   callbackUrl?: string;
   userAgent?: string;
+  /** Optional Discogs rate-limit / 429 retry behavior for DefaultHttpClient. */
+  rateLimit?: RateLimitOptions;
 }
 
 export class DiscogsFactory {
@@ -19,6 +24,7 @@ export class DiscogsFactory {
     const httpClient = new DefaultHttpClient(
       config.baseUrl || 'https://api.discogs.com',
       config.userAgent || 'DefaultUserAgent/1.0',
+      config.rateLimit,
     );
     const tokenManager = new DefaultTokenManager(storage);
     const oauthHandler = new DefaultOAuthHandler({
@@ -46,6 +52,7 @@ export class DiscogsFactory {
     const httpClient = new DefaultHttpClient(
       config.baseUrl || 'https://api.discogs.com',
       config.userAgent || 'DefaultUserAgent/1.0',
+      config.rateLimit,
     );
     const tokenManager = new DefaultTokenManager(storage);
     const oauthHandler = new DefaultOAuthHandler({
@@ -53,7 +60,7 @@ export class DiscogsFactory {
       consumerSecret: config.DiscogsConsumerSecret,
       callbackUrl: config.callbackUrl || 'http://localhost:4567/callback',
       storage,
-      httpClient, // Add httpClient to OAuthHandler config
+      httpClient,
       onStateChange: undefined,
     });
 
@@ -68,17 +75,5 @@ export class DiscogsFactory {
 
   static createWithCustomDependencies(config: Config): BaseImplementation {
     return new BaseImplementation(config);
-  }
-
-  // Helper method to create default dependencies
-  private static createDefaultDependencies(config: DiscogsSDKConfig) {
-    const storage = new MemoryStorageAdapter();
-    const httpClient = new DefaultHttpClient(
-      config.baseUrl || 'https://api.discogs.com',
-      config.userAgent || 'DefaultUserAgent/1.0',
-    );
-    const tokenManager = new DefaultTokenManager(storage);
-
-    return { storage, httpClient, tokenManager };
   }
 }
