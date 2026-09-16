@@ -105,6 +105,34 @@ The `DefaultHttpClient` uses the standard `fetch` API, which is available in:
 ### No Runtime Detection Required
 The SDK uses conditional exports and lazy imports to ensure Workers builds never pull in Node-specific code, even at bundle time.
 
+## Rate limiting
+
+`DefaultHttpClient` is Workers-safe and:
+
+- Parses `X-Discogs-Ratelimit`, `X-Discogs-Ratelimit-Used`, and `X-Discogs-Ratelimit-Remaining`
+- On HTTP `429`, retries with backoff using `Retry-After` when present (otherwise remaining-window / exponential backoff)
+- Optionally delays when remaining requests are near the limit
+- Exposes `getLastRateLimitInfo()` and throws typed `RateLimitError` (with header metadata) when retries are exhausted
+
+```typescript
+import { DiscogsSDK, RateLimitError, isRateLimitError } from '@crate.ai/discogs-sdk';
+
+const sdk = new DiscogsSDK({
+  DiscogsConsumerKey: env.DISCOGS_CONSUMER_KEY,
+  DiscogsConsumerSecret: env.DISCOGS_CONSUMER_SECRET,
+  rateLimit: { maxRetries: 3, nearLimitThreshold: 1 },
+});
+
+try {
+  await sdk.search.getSearchResults({ query: 'rush' });
+} catch (err) {
+  if (isRateLimitError(err)) {
+    console.log(err.rateLimit.remaining, err.rateLimit.retryAfterSeconds);
+  }
+  throw err;
+}
+```
+
 ## Troubleshooting
 
 ### "Invalid consumer" error from Discogs
