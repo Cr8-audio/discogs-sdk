@@ -111,7 +111,7 @@ export abstract class Base {
   protected async request<T>(
     endpoint: string,
     options?: RequestInit,
-    body?: any,
+    body?: unknown,
   ): Promise<T> {
     const [oauthToken, oauthTokenSecret] = await Promise.all([
       this.tokenManager.getAccessToken(),
@@ -123,23 +123,25 @@ export abstract class Base {
       'User-Agent': this.userAgent,
     });
 
-    if (body) {
+    let requestBody: BodyInit | undefined;
+    if (body !== undefined && body !== null) {
       if (typeof body === 'string') {
         headers.set('Content-Type', 'application/x-www-form-urlencoded');
+        requestBody = body;
       } else {
         headers.set('Content-Type', 'application/json');
-        body = JSON.stringify(body);
+        requestBody = JSON.stringify(body);
       }
     }
 
     const requestOptions: RequestInit = {
       ...options,
       headers,
-      body,
+      body: requestBody,
       method: options?.method || 'GET',
     };
 
-    return this.httpClient.request<T>(endpoint, requestOptions, body);
+    return this.httpClient.request<T>(endpoint, requestOptions, requestBody);
   }
 }
 
@@ -178,7 +180,7 @@ export class BaseImplementation extends Base {
   public async requestPublic<T>(
     endpoint: string,
     options?: RequestInit,
-    body?: any,
+    body?: unknown,
   ): Promise<T> {
     return this.request<T>(endpoint, options, body);
   }
