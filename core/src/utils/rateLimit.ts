@@ -95,10 +95,7 @@ export function computeBackoffMs(
     info.retryAfterSeconds != null &&
     info.retryAfterSeconds > 0
   ) {
-    return Math.min(
-      info.retryAfterSeconds * 1000,
-      options.maxBackoffMs,
-    );
+    return Math.min(info.retryAfterSeconds * 1000, options.maxBackoffMs);
   }
 
   // No remaining quota → wait for a full window (or capped exponential).

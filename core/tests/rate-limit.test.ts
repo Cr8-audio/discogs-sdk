@@ -110,9 +110,13 @@ describe('DefaultHttpClient rate-limit handling', () => {
         },
       ),
     );
-    const client = new DefaultHttpClient('https://api.discogs.com', 'Test/1.0', {
-      maxRetries: 0,
-    });
+    const client = new DefaultHttpClient(
+      'https://api.discogs.com',
+      'Test/1.0',
+      {
+        maxRetries: 0,
+      },
+    );
     await client.request('/database/search?q=test');
     expect(client.getLastRateLimitInfo()).toEqual({
       limit: 60,
@@ -142,10 +146,14 @@ describe('DefaultHttpClient rate-limit handling', () => {
           },
         ),
       );
-    const client = new DefaultHttpClient('https://api.discogs.com', 'Test/1.0', {
-      maxRetries: 2,
-      nearLimitThreshold: -1,
-    });
+    const client = new DefaultHttpClient(
+      'https://api.discogs.com',
+      'Test/1.0',
+      {
+        maxRetries: 2,
+        nearLimitThreshold: -1,
+      },
+    );
     const pending = client.request<{ results: unknown[] }>(
       '/database/search?q=x',
     );
@@ -161,10 +169,14 @@ describe('DefaultHttpClient rate-limit handling', () => {
         { status: 429, headers: RATE_HEADERS_FULL },
       ),
     );
-    const client = new DefaultHttpClient('https://api.discogs.com', 'Test/1.0', {
-      maxRetries: 0,
-      nearLimitThreshold: -1,
-    });
+    const client = new DefaultHttpClient(
+      'https://api.discogs.com',
+      'Test/1.0',
+      {
+        maxRetries: 0,
+        nearLimitThreshold: -1,
+      },
+    );
     await expect(client.request('/oauth/identity')).rejects.toMatchObject({
       name: 'RateLimitError',
       code: ErrorCodes.RATE_LIMIT_ERROR,
@@ -209,11 +221,15 @@ describe('DefaultHttpClient rate-limit handling', () => {
           },
         ),
       );
-    const client = new DefaultHttpClient('https://api.discogs.com', 'Test/1.0', {
-      nearLimitThreshold: 1,
-      windowMs: 60_000,
-      maxRetries: 0,
-    });
+    const client = new DefaultHttpClient(
+      'https://api.discogs.com',
+      'Test/1.0',
+      {
+        nearLimitThreshold: 1,
+        windowMs: 60_000,
+        maxRetries: 0,
+      },
+    );
     await client.request('/one');
     const second = client.request('/two');
     expect(fetchMock).toHaveBeenCalledTimes(1);

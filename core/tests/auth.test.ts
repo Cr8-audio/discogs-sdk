@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { Auth } from '../src';
 import { MockHttpClient } from './__mocks__/mockHttpClient';
 import { MockStorageAdapter } from './__mocks__/mockStorage';
-import { DiscogsError, ErrorCodes } from '../src/utils/errors';
+import { DiscogsError } from '../src/utils/errors';
 import { createTestConfig } from './helpers/setup';
 import { BaseImplementation } from '../src/base';
 

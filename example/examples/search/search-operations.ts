@@ -2,19 +2,22 @@ import { DiscogsSDK } from '@crate.ai/discogs-sdk';
 
 export async function searchExample(sdk: DiscogsSDK) {
     try {
-        const basicResults = await sdk.search.getSearchResults({
+        const basic = await sdk.search.getSearchResults({
             query: 'Dark Side of the Moon',
             type: 'release'
         });
-        console.log('Basic search results:', basicResults);
+        console.log(`Basic search: ${basic.pagination.items} matches`);
+        console.log(basic.results.slice(0, 5));
 
-        const advancedResults = await sdk.search.getSearchResults({
+        const advanced = await sdk.search.getSearchResults({
             query: 'Miles Davis',
             type: 'release',
             year: '1959',
-            format: 'album'
+            format: 'album',
+            perPage: 10
         });
-        console.log('Advanced search results:', advancedResults);
+        console.log(`Advanced search: ${advanced.pagination.items} matches`);
+        console.log(advanced.results);
 
     } catch (error) {
         console.error('Search operations failed:', error);

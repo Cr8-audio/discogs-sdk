@@ -1,5 +1,5 @@
-import { StorageAdapter } from '../interfaces/storage';
-import { TokenManager } from '../interfaces/token';
+import { type StorageAdapter } from '../interfaces/storage';
+import { type TokenManager } from '../interfaces/token';
 
 export class DefaultTokenManager implements TokenManager {
   constructor(private storage: StorageAdapter) {}

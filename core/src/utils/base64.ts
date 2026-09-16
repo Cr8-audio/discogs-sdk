@@ -1,6 +1,6 @@
 /**
  * Web-safe base64 encoding utility
- * 
+ *
  * This module provides base64 encoding that works across Node.js and
  * Cloudflare Workers/Edge runtimes without assuming Buffer is available.
  */
@@ -8,7 +8,7 @@
 /**
  * Encode a string to base64 using web-standard APIs when available,
  * falling back to Node's Buffer only if present.
- * 
+ *
  * @param input - The string to encode
  * @returns Base64-encoded string
  */
@@ -41,7 +41,7 @@ export function base64Encode(input: string): string {
 /**
  * Decode a base64 string using web-standard APIs when available,
  * falling back to Node's Buffer only if present.
- * 
+ *
  * @param input - The base64 string to decode
  * @returns Decoded string
  */
@@ -51,9 +51,7 @@ export function base64Decode(input: string): string {
     try {
       const binaryString = atob(input);
       // Convert binary string back to UTF-8
-      const bytes = Uint8Array.from(binaryString, (char) =>
-        char.charCodeAt(0),
-      );
+      const bytes = Uint8Array.from(binaryString, (char) => char.charCodeAt(0));
       return new TextDecoder().decode(bytes);
     } catch {
       // Fall through to Buffer if atob fails

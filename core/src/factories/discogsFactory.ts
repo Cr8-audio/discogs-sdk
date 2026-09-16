@@ -1,9 +1,9 @@
-import { Config, BaseImplementation } from '../base';
-import { StorageAdapter } from '../interfaces/storage';
+import { type Config, BaseImplementation } from '../base';
+import { type StorageAdapter } from '../interfaces/storage';
 import { MemoryStorageAdapter } from '../adapters/memoryStorage';
 import {
   DefaultHttpClient,
-  RateLimitOptions,
+  type RateLimitOptions,
 } from '../implementations/DefaultHttpClient';
 import { DefaultOAuthHandler } from '../implementations/DefaultOAuthHandler';
 import { DefaultTokenManager } from '../implementations/DefaultTokenManager';

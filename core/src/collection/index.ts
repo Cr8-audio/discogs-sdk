@@ -1,4 +1,4 @@
-import { BaseImplementation } from '../base';
+import { type BaseImplementation } from '../base';
 import { DiscogsError, ErrorCodes } from '../utils/errors';
 import type {
   CollectionResponse,
@@ -40,7 +40,7 @@ export class Collection {
       if (userIdentityStr) {
         try {
           userIdentity = JSON.parse(userIdentityStr) as UserIdentityResponse;
-        } catch (e) {
+        } catch {
           console.warn('Failed to parse user identity from storage');
         }
       }
@@ -112,18 +112,9 @@ export class Collection {
 
       const url = `users/${username}/collection/folders/${folderId}/releases?${queryParams.toString()}`;
 
-      try {
-        return await this.base.requestPublic<CollectionResponse>(url, options);
-      } catch (error) {
-        if (error instanceof Error && error.message.includes('429')) {
-          throw new DiscogsError(
-            'Rate limit exceeded. Please try again later.',
-            ErrorCodes.RATE_LIMIT_ERROR,
-            error,
-          );
-        }
-        throw error;
-      }
+      // DefaultHttpClient already retries 429s and throws a typed
+      // RateLimitError, which handleError passes through untouched.
+      return await this.base.requestPublic<CollectionResponse>(url, options);
     } catch (error) {
       throw this.handleError(error, 'Failed to fetch collection');
     }
