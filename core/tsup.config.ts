@@ -4,9 +4,9 @@ export default defineConfig({
   entry: {
     // Package root — must stay free of Node built-ins (see scripts/check-bundle.mjs).
     index: 'src/index.ts',
-    // Node-only entry: `@crate.ai/discogs-sdk/node`.
+    // Node-only entry: `@cr8.audio/discogs-sdk/node`.
     node: 'src/node.ts',
-    // Standalone utilities: `@crate.ai/discogs-sdk/utils`.
+    // Standalone utilities: `@cr8.audio/discogs-sdk/utils`.
     utils: 'src/utils.ts',
   },
   format: ['cjs', 'esm'],

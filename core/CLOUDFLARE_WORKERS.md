@@ -1,6 +1,6 @@
 # Cloudflare Workers Compatibility Guide
 
-`@crate.ai/discogs-sdk` runs in Cloudflare Workers and other edge runtimes.
+`@cr8.audio/discogs-sdk` runs in Cloudflare Workers and other edge runtimes.
 
 > **3.0.0 made this real.** Versions 2.3.x–2.4.x _documented_ edge safety, but
 > `src/index.ts` still re-exported `NodeAuth`, so `dist/index.js` contained
@@ -19,7 +19,7 @@ The default `Auth` class now works in edge runtimes:
 - No `Buffer` assumptions
 
 ```typescript
-import { DiscogsSDK } from '@crate.ai/discogs-sdk';
+import { DiscogsSDK } from '@cr8.audio/discogs-sdk';
 
 // This now works in Cloudflare Workers!
 const sdk = new DiscogsSDK({
@@ -40,8 +40,8 @@ If you need the local callback server for CLI apps, import it from the Node
 entry point — never from the package root:
 
 ```typescript
-import { DiscogsSDK } from '@crate.ai/discogs-sdk';
-import { NodeAuth } from '@crate.ai/discogs-sdk/node';
+import { DiscogsSDK } from '@cr8.audio/discogs-sdk';
+import { NodeAuth } from '@cr8.audio/discogs-sdk/node';
 
 const sdk = new DiscogsSDK({ DiscogsConsumerKey, DiscogsConsumerSecret });
 const auth = new NodeAuth(sdk.auth.base);
@@ -56,6 +56,14 @@ await auth.authenticate();
 
 **No changes needed** - the default `Auth` class still exports these methods.
 
+### Update the package name
+
+```bash
+pnpm remove @crate.ai/discogs-sdk && pnpm add @cr8.audio/discogs-sdk
+```
+
+Then update every import from `@crate.ai/discogs-sdk` to `@cr8.audio/discogs-sdk`.
+
 ### If you use authenticate() (local callback server)
 
 Update your imports:
@@ -65,7 +73,7 @@ Update your imports:
 import { NodeAuth } from '@crate.ai/discogs-sdk';
 
 // After (3.0.0)
-import { NodeAuth } from '@crate.ai/discogs-sdk/node';
+import { NodeAuth } from '@cr8.audio/discogs-sdk/node';
 ```
 
 ### If you call search
@@ -88,7 +96,7 @@ const { results, pagination } = await sdk.search.getSearchResults({
 ```typescript
 // app/api/auth/discogs/request-token.ts
 import { createFileRoute } from '@tanstack/react-router';
-import { DiscogsSDK } from '@crate.ai/discogs-sdk';
+import { DiscogsSDK } from '@cr8.audio/discogs-sdk';
 import { env } from 'cloudflare:workers';
 
 export const Route = createFileRoute('/api/auth/discogs/request-token')({
@@ -154,7 +162,7 @@ import {
   DiscogsSDK,
   RateLimitError,
   isRateLimitError,
-} from '@crate.ai/discogs-sdk';
+} from '@cr8.audio/discogs-sdk';
 
 const sdk = new DiscogsSDK({
   DiscogsConsumerKey: env.DISCOGS_CONSUMER_KEY,

@@ -1,5 +1,5 @@
 {
-  "name": "@crate.ai/discogs-sdk",
+  "name": "@cr8.audio/discogs-sdk",
   "version": "2.4.1",
   "description": "TypeScript SDK for the Discogs API — OAuth, collection, search and user, with first-class Cloudflare Workers / edge support",
   "repository": {

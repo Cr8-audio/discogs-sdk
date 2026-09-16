@@ -1,4 +1,8 @@
-# @crate.ai/discogs-sdk
+# @cr8.audio/discogs-sdk
+
+> **Renamed in 3.0.0.** Versions 2.4.1 and earlier were published as
+> `@crate.ai/discogs-sdk`. The entries below predate the rename; version
+> numbering continues unbroken across it.
 
 ## 2.4.0
 

@@ -1,11 +1,26 @@
 ---
-'@crate.ai/discogs-sdk': major
+'@cr8.audio/discogs-sdk': major
 ---
 
-Make the package root genuinely edge-safe, and fix the dependency-injection,
-search and storage defects that shipped with 2.x.
+The package is renamed to `@cr8.audio/discogs-sdk`, the root is now genuinely
+edge-safe, and the dependency-injection, search and storage defects that
+shipped with 2.x are fixed.
 
 ### Breaking changes
+
+- **The package is renamed.** `@crate.ai/discogs-sdk` is no longer maintained;
+  this and all future releases ship as `@cr8.audio/discogs-sdk`, matching the
+  `Cr8-audio` GitHub org and the `cr8.audio` domain. Version numbering
+  continues from 2.4.1, so the first release under the new name is 3.0.0.
+
+  ```diff
+  - import { DiscogsSDK } from '@crate.ai/discogs-sdk';
+  + import { DiscogsSDK } from '@cr8.audio/discogs-sdk';
+  ```
+
+  ```bash
+  pnpm remove @crate.ai/discogs-sdk && pnpm add @cr8.audio/discogs-sdk
+  ```
 
 - **`NodeAuth` is no longer exported from the package root.** It imported
   `node:http`, which put `require("http")` into `dist/index.js` and broke every
@@ -14,7 +29,7 @@ search and storage defects that shipped with 2.x.
 
   ```diff
   - import { NodeAuth } from '@crate.ai/discogs-sdk';
-  + import { NodeAuth } from '@crate.ai/discogs-sdk/node';
+  + import { NodeAuth } from '@cr8.audio/discogs-sdk/node';
   ```
 
   A `check:bundle` step now fails CI if a Node built-in ever reaches an edge

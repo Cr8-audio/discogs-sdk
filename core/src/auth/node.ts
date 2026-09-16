@@ -39,7 +39,7 @@ const DEFAULT_CALLBACK_CONFIG: CallbackConfig = {
  *
  * @example
  * ```typescript
- * import { NodeAuth } from '@crate.ai/discogs-sdk/node';
+ * import { NodeAuth } from '@cr8.audio/discogs-sdk/node';
  * const auth = new NodeAuth(base);
  * await auth.authenticate(); // Starts local server
  * ```

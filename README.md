@@ -1,20 +1,22 @@
 # Discogs SDK
 
-The Discogs SDK (`@crate.ai/discogs-sdk`) authenticates with the Discogs API and accesses collection, search, and identity data.
+The Discogs SDK (`@cr8.audio/discogs-sdk`) authenticates with the Discogs API and accesses collection, search, and identity data.
 
-The package root is Cloudflare Workers–safe: it imports no Node built-ins. The Node-only local OAuth callback server lives behind a separate entry point, `@crate.ai/discogs-sdk/node`.
+> **Renamed in 3.0.0.** Previously published as `@crate.ai/discogs-sdk`, which is no longer maintained. Version numbering continues unbroken — 3.0.0 succeeds 2.4.1.
+
+The package root is Cloudflare Workers–safe: it imports no Node built-ins. The Node-only local OAuth callback server lives behind a separate entry point, `@cr8.audio/discogs-sdk/node`.
 
 # Getting Started
 
 1. Sign in to Discogs and open [developer settings](https://www.discogs.com/settings/developers).
 2. Click **New App**, fill out the form, and create the app.
 3. Copy your consumer key and secret.
-4. Install: `pnpm add @crate.ai/discogs-sdk` (Node 20+).
+4. Install: `pnpm add @cr8.audio/discogs-sdk` (Node 20+).
 
 # Usage
 
 ```typescript
-import { DiscogsSDK, StorageAdapter } from '@crate.ai/discogs-sdk';
+import { DiscogsSDK, StorageAdapter } from '@cr8.audio/discogs-sdk';
 
 const discogs = new DiscogsSDK({
   DiscogsConsumerKey: 'YOUR_CONSUMER_KEY',
@@ -48,16 +50,16 @@ const discogs = new DiscogsSDK({
 
 | Import | Contents | Runtime |
 | ------ | -------- | ------- |
-| `@crate.ai/discogs-sdk` | `DiscogsSDK` and every resource, interface and type | Workers, Deno, browsers, Node |
-| `@crate.ai/discogs-sdk/node` | `NodeAuth` — OAuth with a local callback server | Node only |
-| `@crate.ai/discogs-sdk/utils` | `base64Encode`, error classes, rate-limit helpers | Workers, Deno, browsers, Node |
+| `@cr8.audio/discogs-sdk` | `DiscogsSDK` and every resource, interface and type | Workers, Deno, browsers, Node |
+| `@cr8.audio/discogs-sdk/node` | `NodeAuth` — OAuth with a local callback server | Node only |
+| `@cr8.audio/discogs-sdk/utils` | `base64Encode`, error classes, rate-limit helpers | Workers, Deno, browsers, Node |
 
 ## Custom storage
 
 Default storage is in-memory. Persist tokens with a `StorageAdapter` via `DiscogsSDK.withCustomStorage`:
 
 ```typescript
-import { DiscogsSDK, StorageAdapter } from '@crate.ai/discogs-sdk';
+import { DiscogsSDK, StorageAdapter } from '@cr8.audio/discogs-sdk';
 
 class FileOrKvStorage implements StorageAdapter {
   async getItem(key: string): Promise<string | null> {
@@ -92,7 +94,7 @@ const discogs = DiscogsSDK.withCustomStorage(
 
 | Path | What it is |
 | ---- | ---------- |
-| `core/` | The published `@crate.ai/discogs-sdk` package |
+| `core/` | The published `@cr8.audio/discogs-sdk` package |
 | `example/` | Runnable CLI examples that link against `core/` |
 
 ## Contributing

@@ -1,6 +1,6 @@
 # Discogs SDK Examples
 
-This project demonstrates how to use the @crate.ai/discogs-sdk package with practical examples.
+This project demonstrates how to use the @cr8.audio/discogs-sdk package with practical examples.
 
 ## Setup
 

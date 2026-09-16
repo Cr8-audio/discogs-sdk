@@ -1,5 +1,5 @@
 /**
- * Node-only entry point: `@crate.ai/discogs-sdk/node`.
+ * Node-only entry point: `@cr8.audio/discogs-sdk/node`.
  *
  * Everything exported here may use Node built-ins (`node:http`, `node:url`).
  * Do not import this module from Cloudflare Workers, Deno Deploy, or the

@@ -6,7 +6,7 @@
  * the package root. Import it from the dedicated Node entry point instead:
  *
  * ```ts
- * import { NodeAuth } from '@crate.ai/discogs-sdk/node';
+ * import { NodeAuth } from '@cr8.audio/discogs-sdk/node';
  * ```
  */
 export { Auth } from './web';

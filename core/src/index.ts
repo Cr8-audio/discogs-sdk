@@ -48,7 +48,7 @@ export * from './user/types';
  *
  * The package root is free of Node built-ins and runs in Cloudflare Workers,
  * Deno, and browsers. For the Node-only local OAuth callback server, import
- * `NodeAuth` from `@crate.ai/discogs-sdk/node`.
+ * `NodeAuth` from `@cr8.audio/discogs-sdk/node`.
  *
  * @example
  * ```ts

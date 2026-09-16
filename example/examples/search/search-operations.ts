@@ -1,4 +1,4 @@
-import { DiscogsSDK } from '@crate.ai/discogs-sdk';
+import { DiscogsSDK } from '@cr8.audio/discogs-sdk';
 
 export async function searchExample(sdk: DiscogsSDK) {
     try {

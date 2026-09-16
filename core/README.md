@@ -1,6 +1,11 @@
-# @crate.ai/discogs-sdk
+# @cr8.audio/discogs-sdk
 
 A TypeScript SDK for the Discogs API, built around dependency injection and safe to run at the edge.
+
+> **Renamed in 3.0.0.** This package was previously published as
+> `@crate.ai/discogs-sdk`, which is no longer maintained. Version numbering
+> continues unbroken — 3.0.0 succeeds 2.4.1. See
+> [CLOUDFLARE_WORKERS.md](./CLOUDFLARE_WORKERS.md) for the full migration.
 
 ## Features
 
@@ -14,18 +19,18 @@ A TypeScript SDK for the Discogs API, built around dependency injection and safe
 ## Installation
 
 ```bash
-pnpm add @crate.ai/discogs-sdk
+pnpm add @cr8.audio/discogs-sdk
 ```
 
 Requires Node 20+ (or any runtime with `fetch`, `Headers` and `URLSearchParams`).
 
 ## Entry points
 
-| Import                        | Contents                                                                       | Runtime                       |
-| ----------------------------- | ------------------------------------------------------------------------------ | ----------------------------- |
-| `@crate.ai/discogs-sdk`       | `DiscogsSDK`, `Auth`, `Collection`, `Search`, `User`, every interface and type | Workers, Deno, browsers, Node |
-| `@crate.ai/discogs-sdk/node`  | `NodeAuth` — OAuth with a local callback server                                | Node only                     |
-| `@crate.ai/discogs-sdk/utils` | `base64Encode`, error classes, rate-limit helpers                              | Workers, Deno, browsers, Node |
+| Import                         | Contents                                                                       | Runtime                       |
+| ------------------------------ | ------------------------------------------------------------------------------ | ----------------------------- |
+| `@cr8.audio/discogs-sdk`       | `DiscogsSDK`, `Auth`, `Collection`, `Search`, `User`, every interface and type | Workers, Deno, browsers, Node |
+| `@cr8.audio/discogs-sdk/node`  | `NodeAuth` — OAuth with a local callback server                                | Node only                     |
+| `@cr8.audio/discogs-sdk/utils` | `base64Encode`, error classes, rate-limit helpers                              | Workers, Deno, browsers, Node |
 
 > The root never imports `node:http` or any other Node built-in. That invariant
 > is enforced by ESLint and by `pnpm run check:bundle` in CI — if you need the
@@ -40,7 +45,7 @@ Requires Node 20+ (or any runtime with `fetch`, `Headers` and `URLSearchParams`)
 ## Basic usage
 
 ```typescript
-import { DiscogsSDK } from '@crate.ai/discogs-sdk';
+import { DiscogsSDK } from '@cr8.audio/discogs-sdk';
 
 const sdk = new DiscogsSDK({
   DiscogsConsumerKey: 'your_consumer_key',
@@ -76,8 +81,8 @@ const collection = await sdk.collection.getCollection({
 For a script that can open a local callback server, use `NodeAuth`:
 
 ```typescript
-import { DiscogsSDK } from '@crate.ai/discogs-sdk';
-import { NodeAuth } from '@crate.ai/discogs-sdk/node';
+import { DiscogsSDK } from '@cr8.audio/discogs-sdk';
+import { NodeAuth } from '@cr8.audio/discogs-sdk/node';
 
 const sdk = new DiscogsSDK({ DiscogsConsumerKey, DiscogsConsumerSecret });
 const auth = new NodeAuth(sdk.auth.base);
@@ -93,7 +98,7 @@ handler but means nothing survives a restart. Supply a `StorageAdapter` to
 persist them:
 
 ```typescript
-import { DiscogsSDK, type StorageAdapter } from '@crate.ai/discogs-sdk';
+import { DiscogsSDK, type StorageAdapter } from '@cr8.audio/discogs-sdk';
 
 class KvStorage implements StorageAdapter {
   async getItem(key: string): Promise<string | null> {
@@ -136,7 +141,7 @@ window is nearly exhausted, and retries `429`s using `Retry-After` when present.
 When retries run out it throws a typed `RateLimitError`:
 
 ```typescript
-import { isRateLimitError } from '@crate.ai/discogs-sdk';
+import { isRateLimitError } from '@cr8.audio/discogs-sdk';
 
 try {
   await sdk.search.getSearchResults({ query: 'rush' });

@@ -1,6 +1,8 @@
 # discogs-sdk
 
-`@crate.ai/discogs-sdk` — a TypeScript client for the Discogs API, published to npm from `core/`. Its primary consumer is the Crate Audio app (`Cr8-audio/app`), which deploys to Cloudflare Workers.
+`@cr8.audio/discogs-sdk` — a TypeScript client for the Discogs API, published to npm from `core/`. Its primary consumer is the Crate Audio app (`Cr8-audio/app`), which deploys to Cloudflare Workers.
+
+Renamed from `@crate.ai/discogs-sdk` in 3.0.0 (the `crate.ai` domain is gone). Version numbering continued across the rename, so 3.0.0 succeeds 2.4.1. The old name is unmaintained — if you find it anywhere outside a "before" migration example, it's stale.
 
 ## Layout
 
@@ -21,7 +23,7 @@ This was broken for the whole 2.3.x–2.4.x line: `src/index.ts` re-exported `No
 - **ESLint** (`no-restricted-imports`) blocks Node built-ins everywhere except `src/node.ts` and `src/auth/node.ts`.
 - **`pnpm run check:bundle`** scans the *built* `dist/index.*` and `dist/utils.*` and fails CI if a built-in appears.
 
-Node-only code goes in `src/auth/node.ts` and is exported from `src/node.ts` (`@crate.ai/discogs-sdk/node`). Never re-export it from `src/index.ts`.
+Node-only code goes in `src/auth/node.ts` and is exported from `src/node.ts` (`@cr8.audio/discogs-sdk/node`). Never re-export it from `src/index.ts`.
 
 ## Architecture
 
