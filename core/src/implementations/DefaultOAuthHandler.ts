@@ -1,16 +1,15 @@
 import {
-  OAuthHandler,
-  OAuthCallbackParams,
-  OAuthConfig,
-  OAuthState,
-  OAuthTokenPair,
+  type OAuthHandler,
+  type OAuthCallbackParams,
+  type OAuthConfig,
+  type OAuthState,
+  type OAuthTokenPair,
 } from '../interfaces/oauth';
 import { DiscogsError, ErrorCodes } from '../utils/errors';
-import { HttpClient } from '../interfaces/http';
+import { type HttpClient } from '../interfaces/http';
 
 export class DefaultOAuthHandler implements OAuthHandler {
   private readonly AUTH_BASE_URL = 'https://www.discogs.com/oauth';
-  private currentState: OAuthState = { status: 'initial' };
   private readonly httpClient: HttpClient;
 
   constructor(private readonly config: OAuthConfig) {
@@ -18,7 +17,6 @@ export class DefaultOAuthHandler implements OAuthHandler {
   }
 
   private setState(newState: OAuthState): void {
-    this.currentState = newState;
     this.config.onStateChange?.(newState);
   }
 

@@ -1,14 +1,14 @@
-import { BaseImplementation } from '../base';
+import { type BaseImplementation } from '../base';
 import { DiscogsError, ErrorCodes } from '../utils/errors';
 import {
-  UserIdentityResponse,
-  RequestTokenResponse,
-  AccessTokenParams,
-  CallbackConfig,
-  OAuthTokenPair,
+  type UserIdentityResponse,
+  type RequestTokenResponse,
+  type AccessTokenParams,
+  type CallbackConfig,
+  type OAuthTokenPair,
 } from './types';
-import http from 'http';
-import { URL } from 'url';
+import http from 'node:http';
+import { URL } from 'node:url';
 
 const DEFAULT_CALLBACK_CONFIG: CallbackConfig = {
   port: 4567,
@@ -32,14 +32,14 @@ const DEFAULT_CALLBACK_CONFIG: CallbackConfig = {
 
 /**
  * Node.js-specific Auth class with local HTTP callback server support.
- * 
+ *
  * This class includes the `authenticate()` method which starts a local HTTP
  * server to handle OAuth callbacks. For serverless/edge environments like
  * Cloudflare Workers, use the Auth class from './web.ts' instead.
- * 
+ *
  * @example
  * ```typescript
- * import { NodeAuth } from '@crate.ai/discogs-sdk/node';
+ * import { NodeAuth } from '@cr8.audio/discogs-sdk/node';
  * const auth = new NodeAuth(base);
  * await auth.authenticate(); // Starts local server
  * ```
@@ -52,11 +52,6 @@ export class NodeAuth {
     callbackConfig: Partial<CallbackConfig> = {},
   ) {
     this.callbackConfig = { ...DEFAULT_CALLBACK_CONFIG, ...callbackConfig };
-  }
-
-  private getCallbackUrl(): string {
-    const { host, port, path } = this.callbackConfig;
-    return `http://${host}:${port}${path}`;
   }
 
   async getAuthorizationUrl(): Promise<string> {
@@ -170,8 +165,7 @@ export class NodeAuth {
   private getOAuthVerifier(): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       let serverStarted = false;
-      const { port, host, path, timeout, customSuccessHtml } =
-        this.callbackConfig;
+      const { port, host, timeout, customSuccessHtml } = this.callbackConfig;
 
       const server = http.createServer((req, res) => {
         if (!req.url) {

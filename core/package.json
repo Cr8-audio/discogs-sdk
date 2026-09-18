@@ -1,51 +1,119 @@
 {
-  "name": "@crate.ai/discogs-sdk",
+  "name": "@cr8.audio/discogs-sdk",
   "version": "2.4.1",
-  "description": "an SDK for the Discogs API",
+  "description": "TypeScript SDK for the Discogs API — OAuth, collection, search and user, with first-class Cloudflare Workers / edge support",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Crate-AI/discogs-sdk"
+    "url": "git+https://github.com/Cr8-audio/discogs-sdk.git",
+    "directory": "core"
   },
   "bugs": {
-    "url": "https://github.com/Crate-AI/discogs-sdk/issues"
+    "url": "https://github.com/Cr8-audio/discogs-sdk/issues"
   },
-  "homepage": "https://github.com/Crate-AI/discogs-sdk#readme",
+  "homepage": "https://github.com/Cr8-audio/discogs-sdk#readme",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./node": {
+      "import": {
+        "types": "./dist/node.d.mts",
+        "default": "./dist/node.mjs"
+      },
+      "require": {
+        "types": "./dist/node.d.ts",
+        "default": "./dist/node.js"
+      }
+    },
+    "./utils": {
+      "import": {
+        "types": "./dist/utils.d.mts",
+        "default": "./dist/utils.mjs"
+      },
+      "require": {
+        "types": "./dist/utils.d.ts",
+        "default": "./dist/utils.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "node": [
+        "./dist/node.d.ts"
+      ],
+      "utils": [
+        "./dist/utils.d.ts"
+      ]
+    }
+  },
   "scripts": {
-    "test": "vitest",
-    "test:coverage": "vitest run --coverage",
     "build": "tsup",
-    "clean": "rm -rf dist && tsup",
     "dev": "tsup --watch",
-    "lint": "tsc",
-    "ci": "pnpm run lint && pnpm run build",
-    "release": "pnpm run lint && pnpm run build && changeset publish"
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,mjs,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,mjs,json,md}\"",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check:bundle": "node scripts/check-bundle.mjs",
+    "ci": "pnpm run format:check && pnpm run typecheck && pnpm run lint && pnpm run test:run && pnpm run build && pnpm run check:bundle",
+    "release": "pnpm run ci && changeset publish"
   },
   "keywords": [
     "discogs",
     "sdk",
     "api",
-    "oauth"
+    "oauth",
+    "music",
+    "vinyl",
+    "cloudflare-workers",
+    "edge"
   ],
   "author": "paprikaf",
   "license": "MIT",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CLOUDFLARE_WORKERS.md",
+    "LICENSE"
   ],
   "devDependencies": {
-    "@changesets/cli": "^2.27.1",
-    "@types/node": "^18.19.33",
-    "tsup": "^8.0.2",
-    "typescript": "^4.4.4",
-    "vitest": "^1.0.0",
-    "@vitest/coverage-v8": "^1.0.0"
+    "@changesets/cli": "^2.29.7",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.37.0",
+    "prettier": "^3.6.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.0",
+    "vitest": "^3.2.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

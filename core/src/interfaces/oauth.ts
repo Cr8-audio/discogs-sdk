@@ -1,5 +1,5 @@
-import { HttpClient } from './http';
-import { StorageAdapter } from './storage';
+import { type HttpClient } from './http';
+import { type StorageAdapter } from './storage';
 
 export interface OAuthState {
   status:

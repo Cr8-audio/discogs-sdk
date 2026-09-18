@@ -1,6 +1,6 @@
-import { DiscogsError, ErrorCodes } from 'src/utils/errors';
-import { BaseImplementation } from '../base';
-import { UserParams, UserResult } from './types';
+import { DiscogsError, ErrorCodes } from '../utils/errors';
+import { type BaseImplementation } from '../base';
+import { type UserParams, type UserResult } from './types';
 
 export class User {
   constructor(public readonly base: BaseImplementation) {}

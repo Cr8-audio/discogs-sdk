@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@crate.ai/discogs-sdk": "link:../core",
+    "@cr8.audio/discogs-sdk": "link:../core",
     "dotenv": "^16.4.5",
     "@clack/prompts": "^0.7.0",
     "picocolors": "^1.0.1"

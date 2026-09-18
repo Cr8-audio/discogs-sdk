@@ -1,8 +1,8 @@
-import { HttpClient } from '../interfaces/http';
+import { type HttpClient } from '../interfaces/http';
 import { DiscogsError, ErrorCodes, RateLimitError } from '../utils/errors';
 import {
-  DiscogsRateLimitInfo,
-  RateLimitOptions,
+  type DiscogsRateLimitInfo,
+  type RateLimitOptions,
   computeBackoffMs,
   computeNearLimitDelayMs,
   mergeRateLimitOptions,

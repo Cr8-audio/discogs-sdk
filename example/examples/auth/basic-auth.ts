@@ -1,4 +1,4 @@
-import { DiscogsSDK } from '@crate.ai/discogs-sdk';
+import { DiscogsSDK } from '@cr8.audio/discogs-sdk';
 import readline from 'readline';
 
 function createReadlineInterface() {

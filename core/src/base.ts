@@ -1,11 +1,7 @@
-import { StorageAdapter } from './interfaces/storage';
-import { MemoryStorageAdapter } from './adapters/memoryStorage';
-import { TokenManager } from './interfaces/token';
-import { OAuthHandler } from './interfaces/oauth';
-import { HttpClient } from './interfaces/http';
-import { DefaultHttpClient } from './implementations/DefaultHttpClient';
-import { DefaultTokenManager } from './implementations/DefaultTokenManager';
-import { DefaultOAuthHandler } from './implementations/DefaultOAuthHandler';
+import type { StorageAdapter } from './interfaces/storage';
+import type { TokenManager } from './interfaces/token';
+import type { OAuthHandler } from './interfaces/oauth';
+import type { HttpClient } from './interfaces/http';
 export type Config = {
   DiscogsConsumerKey: string;
   DiscogsConsumerSecret: string;
@@ -81,8 +77,8 @@ export abstract class Base {
    * @returns {string} The generated OAuth header
    */
   protected generateOAuthHeader(
-    oauthToken?: string,
-    oauthTokenSecret?: string,
+    oauthToken?: string | null,
+    oauthTokenSecret?: string | null,
   ): string {
     const timestamp = this.generateTimestamp();
     const nonce = this.generateNonce();
@@ -113,15 +109,23 @@ export abstract class Base {
     options?: RequestInit,
     body?: unknown,
   ): Promise<T> {
-    const [oauthToken, oauthTokenSecret] = await Promise.all([
-      this.tokenManager.getAccessToken(),
-      this.tokenManager.getAccessTokenSecret(),
-    ]);
+    // Start from the caller's headers. Callers that already resolved their own
+    // credentials (Search's Basic-auth fallback, Collection's Content-Length)
+    // used to have them silently replaced here.
+    const headers = new Headers(options?.headers);
 
-    const headers = new Headers({
-      Authorization: this.generateOAuthHeader(oauthToken, oauthTokenSecret),
-      'User-Agent': this.userAgent,
-    });
+    if (!headers.has('Authorization')) {
+      const [oauthToken, oauthTokenSecret] = await Promise.all([
+        this.tokenManager.getAccessToken(),
+        this.tokenManager.getAccessTokenSecret(),
+      ]);
+      headers.set(
+        'Authorization',
+        this.generateOAuthHeader(oauthToken, oauthTokenSecret),
+      );
+    }
+
+    headers.set('User-Agent', this.userAgent);
 
     let requestBody: BodyInit | undefined;
     if (body !== undefined && body !== null) {
@@ -171,8 +175,8 @@ export class BaseImplementation extends Base {
   }
 
   public generateOAuthHeaderPublic(
-    oauthToken?: string,
-    oauthTokenSecret?: string,
+    oauthToken?: string | null,
+    oauthTokenSecret?: string | null,
   ): string {
     return this.generateOAuthHeader(oauthToken, oauthTokenSecret);
   }

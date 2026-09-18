@@ -1,16 +1,14 @@
-import { HttpClient } from 'src/interfaces/http';
-import { OAuthState, OAuthTokenPair } from '../interfaces/oauth';
-import { StorageAdapter } from 'src/interfaces/storage';
-
-export interface RequestTokenResponse {
-  verificationURL: string;
-  requestTokens: OAuthTokenPair;
-}
-
-export interface AccessTokenParams {
-  oauthVerifier: string;
-  oauthToken: string;
-}
+/**
+ * Auth types.
+ *
+ * OAuth token / request shapes are defined once in `../interfaces/oauth` and
+ * re-exported here so both import paths stay in sync.
+ */
+export type {
+  OAuthTokenPair,
+  RequestTokenResponse,
+  AccessTokenParams,
+} from '../interfaces/oauth';
 
 export interface UserIdentityResponse {
   id: number;
@@ -19,6 +17,7 @@ export interface UserIdentityResponse {
   consumer_name: string;
 }
 
+/** Local callback-server options — Node only, used by `NodeAuth`. */
 export interface CallbackConfig {
   port?: number;
   host?: string;
@@ -26,5 +25,3 @@ export interface CallbackConfig {
   timeout?: number;
   customSuccessHtml?: string;
 }
-
-export { OAuthTokenPair } from '../interfaces/oauth';

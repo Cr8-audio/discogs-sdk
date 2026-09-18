@@ -1,15 +1,15 @@
-import { BaseImplementation } from '../base';
+import { type BaseImplementation } from '../base';
 import { DiscogsError, ErrorCodes } from '../utils/errors';
 import {
-  UserIdentityResponse,
-  RequestTokenResponse,
-  AccessTokenParams,
-  OAuthTokenPair,
+  type UserIdentityResponse,
+  type RequestTokenResponse,
+  type AccessTokenParams,
+  type OAuthTokenPair,
 } from './types';
 
 /**
  * Web-compatible Auth class for Cloudflare Workers, Deno, and browsers.
- * 
+ *
  * This version excludes Node.js-specific functionality like the local HTTP
  * callback server. For Node.js environments with local OAuth flows, use
  * the NodeAuth class from './node.ts' instead.

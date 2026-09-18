@@ -39,19 +39,28 @@ describe('Search', () => {
       await storage.setItem('accessTokenSecret', 'test_access_secret');
       await storage.setItem('requestTokenSecret', 'test_request_secret');
 
-      const mockResults = [
-        {
-          id: 123,
-          title: 'Test Album',
-          year: '2023',
-          type: 'release',
+      const mockResponse = {
+        pagination: {
+          per_page: 50,
+          pages: 1,
+          page: 1,
+          items: 1,
+          urls: {},
         },
-      ];
+        results: [
+          {
+            id: 123,
+            title: 'Test Album',
+            year: '2023',
+            type: 'release',
+          },
+        ],
+      };
 
       httpClient.setMockResponse('database/search', {
         ok: true,
         status: 200,
-        data: mockResults,
+        data: mockResponse,
       });
 
       const result = await search.getSearchResults({
@@ -59,7 +68,9 @@ describe('Search', () => {
         type: 'release',
       });
 
-      expect(result).toEqual(mockResults);
+      expect(result).toEqual(mockResponse);
+      expect(result.results).toHaveLength(1);
+      expect(result.pagination.items).toBe(1);
       expect(console.warn).not.toHaveBeenCalled();
 
       const lastRequest = httpClient.getLastRequest();
@@ -114,12 +125,13 @@ describe('Search', () => {
     });
 
     it('should handle all supported search parameters', async () => {
-      const mockResults = [{ id: 123, title: 'Test Album', type: 'release' }];
-
       httpClient.setMockResponse('database/search', {
         ok: true,
         status: 200,
-        data: mockResults,
+        data: {
+          pagination: { per_page: 50, pages: 1, page: 1, items: 1, urls: {} },
+          results: [{ id: 123, title: 'Test Album', type: 'release' }],
+        },
       });
 
       await search.getSearchResults({

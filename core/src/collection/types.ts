@@ -1,22 +1,11 @@
-export declare type CollectionResponse = {
+import type { Pagination } from '../types/common';
+
+export type CollectionResponse = {
   pagination: Pagination;
   releases: Release[];
 };
 
-export declare type Pagination = {
-  per_page: number;
-  pages: number;
-  page: number;
-  items: number;
-  urls: PaginationUrls;
-};
-
-export declare type PaginationUrls = {
-  next: string;
-  last: string;
-};
-
-export declare type Release = {
+export type Release = {
   id: number;
   instance_id: number;
   folder_id: number;
@@ -25,7 +14,7 @@ export declare type Release = {
   notes: Note[];
 };
 
-export declare type BasicInformation = {
+export type BasicInformation = {
   id: number;
   title: string;
   year: number;
@@ -38,13 +27,14 @@ export declare type BasicInformation = {
   genres: string[];
   styles: string[];
 };
-export declare type Format = {
+
+export type Format = {
   qty: string;
   descriptions: string[];
   name: string;
 };
 
-export declare type Label = {
+export type Label = {
   resource_url: string;
   entity_type: string;
   catno: string;
@@ -52,7 +42,7 @@ export declare type Label = {
   name: string;
 };
 
-export declare type Artist = {
+export type Artist = {
   id: number;
   name: string;
   join: string;
@@ -62,10 +52,11 @@ export declare type Artist = {
   role: string;
 };
 
-export declare type Note = {
+export type Note = {
   field_id: number;
   value: string;
 };
+
 export type CollectionSortField =
   | 'label'
   | 'artist'
@@ -77,19 +68,19 @@ export type CollectionSortField =
   | 'year';
 
 export const CollectionSortFields = {
-  LABEL: 'label' as const,
-  ARTIST: 'artist' as const,
-  TITLE: 'title' as const,
-  CATALOG_NUMBER: 'catno' as const,
-  FORMAT: 'format' as const,
-  RATING: 'rating' as const,
-  ADDED: 'added' as const,
-  YEAR: 'year' as const,
-} as const;
+  LABEL: 'label',
+  ARTIST: 'artist',
+  TITLE: 'title',
+  CATALOG_NUMBER: 'catno',
+  FORMAT: 'format',
+  RATING: 'rating',
+  ADDED: 'added',
+  YEAR: 'year',
+} as const satisfies Record<string, CollectionSortField>;
 
 export interface CollectionParams {
   username?: string;
-  folderId?: number | 0;
+  folderId?: number;
   page?: number;
   perPage?: number;
   sort?: CollectionSortField;
