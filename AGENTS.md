@@ -2,7 +2,7 @@
 
 `@cr8.audio/discogs-sdk` — a TypeScript client for the Discogs API, published to npm from `core/`. Its primary consumer is the Crate Audio app (`Cr8-audio/app`), which deploys to Cloudflare Workers.
 
-Renamed from `@crate.ai/discogs-sdk` in 3.0.0 (the `crate.ai` domain is gone). Version numbering continued across the rename, so 3.0.0 succeeds 2.4.1. The old name is unmaintained — if you find it anywhere outside a "before" migration example, it's stale.
+Renamed from `@crate.ai/discogs-sdk` in 3.0.0 (the `crate.ai` domain is gone). Version numbering continued across the rename, so 3.0.0 succeeds 2.4.1. The old name is unmaintained and deprecated on npm (every version points here) — if you find it anywhere outside a "before" migration example, it's stale.
 
 ## Layout
 
@@ -73,27 +73,8 @@ Pick the bump, describe the change, commit the generated file in `core/.changese
 
 Changesets live in `core/.changeset/` only. A stray `.changeset/` at the repo root is a mistake — changesets never looked there.
 
-### One-time: deprecate the old package name (pending)
-
-The package was renamed in 3.0.0. Once `@cr8.audio/discogs-sdk@3.0.0` is live on
-npm, point anyone still on the old name at the new one:
-
-```bash
-npm deprecate @crate.ai/discogs-sdk "renamed to @cr8.audio/discogs-sdk — see https://github.com/Cr8-audio/discogs-sdk"
-```
-
-Three things to get right:
-
-- **Run it after 3.0.0 publishes**, not before — otherwise the notice sends
-  people to a package that does not exist yet.
-- **The CI token will not work.** `NPM_TOKEN` is a granular token scoped to
-  `@cr8.audio`; this command writes to `@crate.ai`. Run it locally from an
-  `npm login` session with owner access to the `crate.ai` org.
-- With no version range, it deprecates **every** published version of the old
-  package, which is what we want here.
-
-Delete this section once it is done.
+`publish.yml` needs the repo (and the Cr8-audio org) setting **Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests"** to open the release PR. With it off, the run fails at "creating pull request" after pushing `changeset-release/main`.
 
 ## Coordinating with the app
 
-Breaking changes here break `Cr8-audio/app` at `app/api/auth/discogs/*` and `lib/api-clients/discogs/`. Publish the SDK first, then bump the app's pin deliberately — the app is on `^2.3.0` and will not pick up 3.x automatically.
+Breaking changes here break `Cr8-audio/app` at `app/api/auth/discogs/*` and `lib/api-clients/discogs/`. Publish the SDK first, then bump the app's pin deliberately — the app pins a caret range and will not pick up a new major automatically.
